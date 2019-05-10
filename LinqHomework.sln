@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqHomework", "LinqHomework\LinqHomework.csproj", "{86A1E106-025F-4A2A-9948-2B1328B2A45E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linq2GitHub", "Linq2GitHub\Linq2GitHub.csproj", "{0F41023A-A37A-4A53-8D51-6603ABC51D17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{86A1E106-025F-4A2A-9948-2B1328B2A45E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86A1E106-025F-4A2A-9948-2B1328B2A45E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86A1E106-025F-4A2A-9948-2B1328B2A45E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F41023A-A37A-4A53-8D51-6603ABC51D17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F41023A-A37A-4A53-8D51-6603ABC51D17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F41023A-A37A-4A53-8D51-6603ABC51D17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F41023A-A37A-4A53-8D51-6603ABC51D17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
