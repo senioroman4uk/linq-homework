@@ -126,7 +126,7 @@ namespace LinqHomework
             {
                 a.actor.FirstName,
                 a.actor.LastName
-            }, a => a.Name);
+            }, a => a.Name).ToArray();
 
             var maxCount = actors.Max(a => a.Count());
             var result = actors.Where(
