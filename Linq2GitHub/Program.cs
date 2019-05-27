@@ -20,20 +20,16 @@ namespace Linq2GitHub
             // Should support sorting by `created, updated, pushed, full_name`
             // Should support sort direction
             // Should support filtering by type
-            // In other cases should throw not implemented
-            var programmers = new List<Programmer>()
-            {
-                new Programmer() {Name = "Kate", Course = 5},
-                new Programmer() {Name="Sveta", Course = 2}
-            };
-            var result = programmers.AsQueryable().OrderBy(programmer => programmer.Course);            
+            // In other cases should throw not implemented          
 
             var query = new GitQueryable(
                 new GitQueryProvider(
                     new QueryTranslator()), 
                     null);
             var test = from element in query
-                    select element;
+                       where element.Owner.Type == "owner"
+                       orderby element.PushedDate descending
+                       select element;
             var list = test.ToList();
             Console.ReadKey();
         }

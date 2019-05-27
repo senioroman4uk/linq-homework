@@ -12,5 +12,11 @@ namespace Linq2GitHub
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public DateTime PushedDate { get; set; }
+        public Owner Owner { get; set; }
+    }
+
+    public class Owner
+    {
+        public string Type { get; set; }
     }
 }

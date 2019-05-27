@@ -16,18 +16,17 @@ namespace Linq2GitHub
         {
             _queryTranslator = queryTranslator;
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://api.github.com/");
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
             _httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
-            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                 "bearer",
-                "754cad0e57d1ada2530b6123539c99c68a734759");
+                "1a9a4c67c4ed545ef216df3c130f445f60cfaff4");
         }
         public IQueryable CreateQuery(Expression expression)
         {
-            throw new NotImplementedException();
+            return new GitQueryable(this, expression);
         }
 
         public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
@@ -42,9 +41,19 @@ namespace Linq2GitHub
 
         public TResult Execute<TResult>(Expression expression)
         {
-            HttpResponseMessage response = _httpClient.GetAsync("user/repos").Result;
+            _queryTranslator.Visit(expression);
+            HttpResponseMessage response = _httpClient.GetAsync(_queryTranslator.UriBuilder.ToString()).Result;
             var result = response.Content.ReadAsAsync<IEnumerable<RepoModel>>().Result;
             return (TResult)result;
+        }
+
+        public Expression RemoveQuotes(Expression expr)
+        {
+            while (expr.NodeType == ExpressionType.Quote)
+            {
+                expr = ((UnaryExpression)expr).Operand;
+            }
+            return expr;
         }
     }
 }

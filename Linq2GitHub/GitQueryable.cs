@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Linq2GitHub
 {
-    class GitQueryable : IQueryable<RepoModel>
+    class GitQueryable : IOrderedQueryable<RepoModel>
     {
         public GitQueryable(IQueryProvider queryProvider, Expression expression)
         {
