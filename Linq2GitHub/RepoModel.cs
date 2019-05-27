@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Linq2GitHub
 {
-    class RepoModel
+    public class RepoModel
     {
         public int Id { get; set; }
         public string FullName { get; set; }

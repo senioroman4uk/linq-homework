@@ -7,28 +7,28 @@ using System.Text;
 
 namespace Linq2GitHub
 {
-    class GitQueryable<T> : IQueryable<T>
+    class GitQueryable : IQueryable<RepoModel>
     {
         public GitQueryable(IQueryProvider queryProvider, Expression expression)
         {
             Provider = queryProvider ?? throw new ArgumentNullException();
             Expression = expression ?? Expression.Constant(this);
         }
-        public Type ElementType => typeof(T);
+        public Type ElementType => typeof(RepoModel);
 
         public Expression Expression { get; }
 
         public IQueryProvider Provider { get; }
 
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<RepoModel> GetEnumerator()
         {
-            var enumerator = Provider.Execute<IEnumerable<T>>(this.Expression).GetEnumerator();
-            return enumerator;
+            var result = Provider.Execute<IEnumerable<RepoModel>>(this.Expression) ?? new List<RepoModel>();
+            return result.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            IEnumerator enumerator = Provider.Execute<IEnumerable>(this.Expression).GetEnumerator();
+            var enumerator = Provider.Execute<IEnumerable>(this.Expression).GetEnumerator();
             return enumerator;
         }
     }

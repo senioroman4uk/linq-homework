@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Linq2GitHub
 {
@@ -24,7 +26,15 @@ namespace Linq2GitHub
                 new Programmer() {Name = "Kate", Course = 5},
                 new Programmer() {Name="Sveta", Course = 2}
             };
-            var result = programmers.AsQueryable().OrderBy(programmer => programmer.Course);
+            var result = programmers.AsQueryable().OrderBy(programmer => programmer.Course);            
+
+            var query = new GitQueryable(
+                new GitQueryProvider(
+                    new QueryTranslator()), 
+                    null);
+            var test = from element in query
+                    select element;
+            var list = test.ToList();
             Console.ReadKey();
         }
     }

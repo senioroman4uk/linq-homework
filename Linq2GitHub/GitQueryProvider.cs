@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Linq2GitHub
@@ -10,14 +11,19 @@ namespace Linq2GitHub
     class GitQueryProvider : IQueryProvider
     {
         HttpClient _httpClient;
-
-        public GitQueryProvider()
+        QueryTranslator _queryTranslator;
+        public GitQueryProvider(QueryTranslator queryTranslator)
         {
+            _queryTranslator = queryTranslator;
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://api.github.com/");
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(
                 "bearer",
-                "db537d9a3a4d21e02cff1e3df79f2196fb15abd5");
+                "754cad0e57d1ada2530b6123539c99c68a734759");
         }
         public IQueryable CreateQuery(Expression expression)
         {
@@ -26,7 +32,7 @@ namespace Linq2GitHub
 
         public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
-            return new GitQueryable<TElement>(this, expression);
+            return (IQueryable<TElement>)new GitQueryable(this, expression);
         }
 
         public object Execute(Expression expression)
@@ -36,7 +42,9 @@ namespace Linq2GitHub
 
         public TResult Execute<TResult>(Expression expression)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = _httpClient.GetAsync("user/repos").Result;
+            var result = response.Content.ReadAsAsync<IEnumerable<RepoModel>>().Result;
+            return (TResult)result;
         }
     }
 }

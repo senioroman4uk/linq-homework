@@ -15,10 +15,22 @@ namespace Linq2GitHub
         {
             if (node.Method.DeclaringType == typeof(IQueryable) && node.Method.Name == "OrderBy")
             {
-                var repo = node.Arguments[0];
-                var argument2 = node.Arguments[1];
+                var lambda = (LambdaExpression)RemoveQuotes(node.Arguments[1]);
+                var lambdaBody = (MemberExpression)RemoveQuotes(lambda.Body);
+                queryMethod = lambda.Parameters[0].Name;
+                var k = lambdaBody.Member.Name;
             }
-            throw new NotSupportedException(string.Format("The method '{0}' is not supported", node.Method.Name));
+            //throw new NotSupportedException(string.Format("The method '{0}' is not supported", node.Method.Name));
+            return node;
+        }
+
+        public Expression RemoveQuotes(Expression expr)
+        {
+            while (expr.NodeType == ExpressionType.Quote)
+            {
+                expr = ((UnaryExpression)expr).Operand;
+            }
+            return expr;
         }
     }
 }
